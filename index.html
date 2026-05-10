@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONYX Systems | Strategic Autonomous Defense</title>
+    
+    <!-- Стримана корпоративна типографіка -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        base: '#030303',
+                        surface: '#0A0A0A',
+                        panel: '#121212',
+                        bordercolor: '#1E1E1E',
+                        accent: '#FF4D00', // Фірмовий колір логотипу
+                        textmain: '#EAEAEA',
+                        textmuted: '#888888'
+                    },
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    },
+                    animation: {
+                        'marquee': 'marquee 30s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Іконки -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            background-color: #030303;
+            color: #EAEAEA;
+            font-family: "Inter", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        * { border-radius: 0 !important; }
+
+        /* Тонка, ледь помітна сітка для фону */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+        
+        /* Стримана анімація появи */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Елегантний скроллбар */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #030303; }
+        ::-webkit-scrollbar-thumb { background: #333333; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF4D00; }
+
+        /* Фільтр зображень: монохром з легким контрастом */
+        .tactical-img {
+            filter: grayscale(1) contrast(1.1) brightness(0.7);
+            transition: all 0.5s ease;
+        }
+        .group:hover .tactical-img {
+            filter: grayscale(0.3) contrast(1.1) brightness(0.9);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden selection:bg-accent selection:text-white">
+
+    <!-- Фон -->
+    <div class="fixed inset-0 bg-grid pointer-events-none z-[-1]"></div>
+
+    <!-- Верхня навігація -->
+    <header class="fixed top-0 w-full z-50 bg-base/80 border-b border-white/5 backdrop-blur-xl transition-all duration-300">
+     
+        
+        <!-- Головне меню -->
+        <nav class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-4 group">
+                <!-- Лаконічний блок логотипа -->
+                <div class="w-8 h-8 flex items-center justify-center">
+                    <img src="FreeSample-Vectorizer-io-jpg.svg" alt="ONYX Logo" class="w-full h-full object-contain">
+                </div>
+                <span class="font-bold text-lg tracking-tight text-white uppercase leading-none">ONYX Systems</span>
+            </a>
+            
+            <div class="hidden lg:flex items-center gap-10 text-[12px] font-medium tracking-[0.1em] uppercase text-textmuted">
+                <a href="#about" class="hover:text-white transition-colors">Доктрина</a>
+                <a href="#solutions" class="hover:text-white transition-colors">Продукти</a>
+                <a href="#media" class="hover:text-white transition-colors">Розвідка</a>
+                <a href="#contact" class="hover:text-white transition-colors">Контакти</a>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <a href="#contact" class="hidden md:block bg-white text-black px-6 py-2.5 text-[11px] font-bold uppercase tracking-widest hover:bg-accent hover:text-white transition-all">
+                    Офіційний запит
+                </a>
+                <!-- Мобільне меню -->
+                <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-accent transition-colors">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </nav>
+
+        <div id="mobile-menu" class="hidden lg:hidden bg-surface border-b border-bordercolor text-[11px] font-medium tracking-widest uppercase p-6 space-y-6 shadow-2xl">
+            <a href="#about" class="block text-textmuted hover:text-white nav-link-mobile border-b border-white/5 pb-4">Доктрина</a>
+            <a href="#solutions" class="block text-textmuted hover:text-white nav-link-mobile border-b border-white/5 pb-4">Продукти</a>
+            <a href="#media" class="block text-textmuted hover:text-white nav-link-mobile border-b border-white/5 pb-4">Розвідка</a>
+            <a href="#contact" class="block text-accent font-bold nav-link-mobile">Офіційний запит</a>
+        </div>
+    </header>
+
+    <!-- Головний екран (Hero) -->
+    <section class="relative pt-40 pb-20 lg:pt-56 lg:pb-32 min-h-screen flex flex-col justify-center">
+        <!-- Стримоне фонове відео/зображення -->
+        <div class="absolute inset-0 z-[-1] opacity-20">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover grayscale">
+                <source src="hero-bg.mp4" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-t from-base via-base/50 to-transparent"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-8 reveal">
+                <div class="font-mono text-accent text-[10px] tracking-[0.2em] uppercase mb-8 flex items-center gap-4">
+                    <span class="w-8 h-[1px] bg-accent"></span>
+                    Autonomous Defense Solutions
+                </div>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white mb-8 leading-[0.9]">
+                    Майбутнє<br>
+                    <span class="text-textmuted">автономної оборони.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-textmuted font-light max-w-2xl mb-12 leading-relaxed">
+                    ONYX Systems розробляє архітектури стримування наступного покоління. Ми поєднуємо передовий штучний інтелект та кінетичні системи для забезпечення абсолютної переваги.
+                </p>
+                <div class="flex flex-wrap gap-4 items-center">
+                    <a href="#solutions" class="bg-white text-black px-8 py-4 font-semibold uppercase text-xs tracking-widest hover:bg-accent hover:text-white transition-all">
+                        Переглянути продукти
+                    </a>
+                    <a href="#about" class="border border-white/10 text-white px-8 py-4 font-semibold uppercase text-xs tracking-widest hover:border-white/30 transition-all">
+                        Технічна доктрина
+                    </a>
+                </div>
+            </div>
+
+            <!-- Лаконічний блок даних замість ігрового HUD -->
+            <div class="lg:col-span-4 hidden lg:block reveal" style="transition-delay: 0.2s;">
+                <div class="border border-white/10 bg-surface/50 backdrop-blur-md p-8">
+                    <img src="FreeSample-Vectorizer-io-jpg.svg" alt="ONYX Icon" class="w-12 h-12 mb-10 opacity-80">
+                    
+                    <div class="space-y-6 border-t border-white/10 pt-6">
+                        <div>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <span class="text-[10px] font-mono text-textmuted uppercase tracking-widest">Точність ШІ-ідентифікації</span>
+                                <span class="text-sm font-mono text-white tracking-widest font-semibold">99.8%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <span class="text-[10px] font-mono text-textmuted uppercase tracking-widest">Час реакції системи</span>
+                                <span class="text-sm font-mono text-white tracking-widest font-semibold">14 MS</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-baseline mb-2">
+                                <span class="text-[10px] font-mono text-textmuted uppercase tracking-widest">Автономність навігації</span>
+                                <span class="text-sm font-mono text-white tracking-widest font-semibold">100%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Стрічка Сертифікацій -->
+    <div class="w-full bg-surface border-y border-white/5 py-4 overflow-hidden flex font-mono text-[10px] uppercase tracking-[0.2em] text-textmuted">
+        <div class="animate-marquee whitespace-nowrap flex items-center gap-12">
+            <span>ISO 9001:2015</span>
+            <span class="w-1 h-1 bg-white/20"></span>
+            <span>MIL-STD-810G COMPLIANT</span>
+            <span class="w-1 h-1 bg-white/20"></span>
+            <span>STANAG 4586 CERTIFIED</span>
+            <span class="w-1 h-1 bg-white/20"></span>
+            <span>NATO NSN REGISTERED</span>
+            <span class="w-1 h-1 bg-white/20"></span>
+            <span>AES-256 SECURED</span>
+            <span class="w-1 h-1 bg-white/20"></span>
+            
+            <span>ISO 9001:2015</span>
+            <span class="w-1 h-1 bg-white/20"></span>
+            <span>MIL-STD-810G COMPLIANT</span>
+            <span class="w-1 h-1 bg-white/20"></span>
+            <span>STANAG 4586 CERTIFIED</span>
+            <span class="w-1 h-1 bg-white/20"></span>
+            <span>NATO NSN REGISTERED</span>
+            <span class="w-1 h-1 bg-white/20"></span>
+            <span>AES-256 SECURED</span>
+        </div>
+    </div>
+
+    <!-- Доктрина (Про компанію) -->
+    <section id="about" class="py-32 bg-base relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="reveal">
+                    <h2 class="text-xs font-mono text-textmuted uppercase tracking-[0.3em] mb-6">Профіль компанії</h2>
+                    <h3 class="text-4xl lg:text-5xl font-bold text-white mb-8 tracking-tight leading-tight">
+                        Домінування у<br>багатодоменному просторі.
+                    </h3>
+                    <p class="text-textmuted text-lg leading-relaxed mb-10 font-light">
+                        У сучасній війні перемагає той, хто швидше обробляє інформацію. ONYX Systems усуває людський фактор із критичного ланцюжка ухвалення рішень, пропонуючи системи, які миттєво ідентифікують, супроводжують та нейтралізують загрози.
+                    </p>
+                    
+                    <div class="space-y-6 font-mono text-[11px] text-white uppercase tracking-wider">
+                        <div class="flex items-start gap-4 pb-6 border-b border-white/10">
+                            <i data-lucide="crosshair" class="w-4 h-4 text-accent shrink-0 mt-0.5"></i>
+                            <div>
+                                <strong class="block mb-1">Абсолютна автономність</strong>
+                                <span class="text-textmuted normal-case font-sans text-sm">Власні алгоритми оптичної навігації гарантують стійкість до РЕБ. Наші платформи не залежать від сигналів супутників.</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 pb-6 border-b border-white/10">
+                            <i data-lucide="network" class="w-4 h-4 text-accent shrink-0 mt-0.5"></i>
+                            <div>
+                                <strong class="block mb-1">Мережева координація</strong>
+                                <span class="text-textmuted normal-case font-sans text-sm">Алгоритми ройового інтелекту для децентралізованого виконання бойових завдань групою апаратів.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative reveal" style="transition-delay: 0.2s;">
+                    <div class="bg-surface border border-white/5 p-2 shadow-2xl relative">
+                        <!-- ВАШЕ ФОТО: doctrine-image.jpg -->
+                        <img src="doctrine-image.jpg" alt="Випробування систем" class="w-full h-auto object-cover tactical-img aspect-[4/3]">
+                        <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-3 py-2 border border-white/10 flex items-center gap-3">
+                            <span class="w-1.5 h-1.5 bg-accent rounded-full"></span>
+                            <span class="font-mono text-[9px] text-white uppercase tracking-widest">Polygraph 04 // Authorized</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Продукти (Екосистема) -->
+    <section id="solutions" class="py-32 bg-surface border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8 reveal">
+                <div>
+                    <h2 class="text-xs font-mono text-textmuted uppercase tracking-[0.3em] mb-4">Лінійка продуктів</h2>
+                    <h3 class="text-4xl font-bold text-white tracking-tight">Системи озброєння</h3>
+                </div>
+                <div class="font-mono text-[10px] text-textmuted uppercase tracking-widest border-b border-white/20 pb-2">
+                    Оновлено: 2026 Q1
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Картка 1: Raven-X -->
+                <div class="reveal group flex flex-col bg-base border border-white/5 hover:border-white/20 transition-colors">
+                    <div class="h-60 overflow-hidden relative border-b border-white/5">
+                        <img src="raven-x.jpg" alt="Raven-X UAV" class="w-full h-full object-cover tactical-img">
+                        <div class="absolute top-4 right-4 bg-white text-black px-3 py-1 font-mono text-[9px] uppercase font-bold tracking-widest">Strike UAV</div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="font-mono text-[10px] text-accent uppercase tracking-widest mb-2">RN-X4</div>
+                        <h4 class="text-2xl font-bold text-white mb-4">Raven-X Loitering</h4>
+                        <p class="text-sm text-textmuted leading-relaxed font-light mb-8 flex-grow">
+                            Високоточний ударний боєприпас з інтегрованим ШІ-пошуком. Здатний самостійно виявляти та уражати бронетехніку противника за заданим шаблоном в умовах сильних перешкод.
+                        </p>
+                        <div class="space-y-3 pt-6 border-t border-white/10 font-mono text-[10px] uppercase">
+                            <div class="flex justify-between">
+                                <span class="text-textmuted">Дальність ураження</span>
+                                <span class="text-white">40 КМ+</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-textmuted">Вага БЧ</span>
+                                <span class="text-white">3.5 КГ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Картка 2: Titan-H -->
+                <div class="reveal group flex flex-col bg-base border border-white/5 hover:border-white/20 transition-colors" style="transition-delay: 0.1s;">
+                    <div class="h-60 overflow-hidden relative border-b border-white/5">
+                        <img src="titan-h.jpg" alt="Titan-H UGV" class="w-full h-full object-cover tactical-img">
+                        <div class="absolute top-4 right-4 bg-white text-black px-3 py-1 font-mono text-[9px] uppercase font-bold tracking-widest">UGV Platform</div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="font-mono text-[10px] text-accent uppercase tracking-widest mb-2">TN-H1</div>
+                        <h4 class="text-2xl font-bold text-white mb-4">Titan-H Logistic</h4>
+                        <p class="text-sm text-textmuted leading-relaxed font-light mb-8 flex-grow">
+                            Багатоцільова наземна роботизована платформа. Використовує машинний зір для автономної логістики, евакуації поранених та вогневої підтримки піхоти.
+                        </p>
+                        <div class="space-y-3 pt-6 border-t border-white/10 font-mono text-[10px] uppercase">
+                            <div class="flex justify-between">
+                                <span class="text-textmuted">Корисна вага</span>
+                                <span class="text-white">800 КГ</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-textmuted">Запас ходу</span>
+                                <span class="text-white">12 ГОД</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Картка 3: Centurion Core -->
+                <div class="reveal group flex flex-col bg-base border border-white/5 hover:border-white/20 transition-colors" style="transition-delay: 0.2s;">
+                    <div class="h-60 overflow-hidden relative border-b border-white/5">
+                        <img src="centurion-os.jpg" alt="Centurion OS" class="w-full h-full object-cover tactical-img">
+                        <div class="absolute top-4 right-4 bg-white text-black px-3 py-1 font-mono text-[9px] uppercase font-bold tracking-widest">AI Software</div>
+                    </div>
+                    <div class="p-8 flex flex-col flex-grow">
+                        <div class="font-mono text-[10px] text-accent uppercase tracking-widest mb-2">CN-OS</div>
+                        <h4 class="text-2xl font-bold text-white mb-4">Centurion Core</h4>
+                        <p class="text-sm text-textmuted leading-relaxed font-light mb-8 flex-grow">
+                            Програмне ядро для повної автоматизації існуючих систем озброєння. Інтегрується в сторонні турелі, додаючи функцію миттєвого захоплення цілей та балістичної корекції.
+                        </p>
+                        <div class="space-y-3 pt-6 border-t border-white/10 font-mono text-[10px] uppercase">
+                            <div class="flex justify-between">
+                                <span class="text-textmuted">Час ідентифікації</span>
+                                <span class="text-white">0.1 СЕК</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-textmuted">Стандарт інтеграції</span>
+                                <span class="text-white">STANAG 4586</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Візуальна розвідка (Галерея) -->
+    <section id="media" class="py-32 bg-base border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-end mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight">Медіа та випробування</h2>
+                <a href="#" class="text-[10px] font-mono text-accent uppercase tracking-widest hover:text-white transition-colors hidden sm:block">Переглянути архів -></a>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 reveal">
+                <!-- ВАШІ ФОТО: intel-1.jpg до intel-4.jpg -->
+                <div class="aspect-square relative overflow-hidden bg-surface group">
+                    <img src="intel-1.jpg" alt="Випробування 1" class="w-full h-full object-cover tactical-img">
+                </div>
+                <div class="aspect-square relative overflow-hidden bg-surface group">
+                    <img src="intel-2.jpg" alt="Випробування 2" class="w-full h-full object-cover tactical-img">
+                </div>
+                <div class="aspect-square relative overflow-hidden bg-surface group">
+                    <img src="intel-3.jpg" alt="Випробування 3" class="w-full h-full object-cover tactical-img">
+                </div>
+                <div class="aspect-square relative overflow-hidden bg-surface group">
+                    <img src="intel-4.jpg" alt="Випробування 4" class="w-full h-full object-cover tactical-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Корпоративна форма зв'язку -->
+    <section id="contact" class="py-32 bg-surface border-t border-white/5">
+        <div class="max-w-3xl mx-auto px-6 reveal">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Офіційний запит</h2>
+                <p class="text-textmuted text-sm font-light">Для державних структур, оборонних підрядників та акредитованих партнерів.</p>
+            </div>
+            
+            <div class="bg-base border border-white/10 p-8 md:p-12 relative overflow-hidden">
+                <!-- Повідомлення про успіх (приховане) -->
+                <div id="form-success" class="absolute inset-0 bg-base z-50 flex flex-col items-center justify-center hidden opacity-0 transition-opacity duration-300">
+                    <i data-lucide="check-circle" class="w-12 h-12 text-white mb-4"></i>
+                    <h3 class="text-xl font-bold text-white mb-2">Запит надіслано</h3>
+                    <p class="text-sm text-textmuted text-center max-w-xs">Наш департамент зв'язків з урядовими структурами зв'яжеться з вами найближчим часом.</p>
+                </div>
+
+                <form id="contact-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-mono text-textmuted uppercase tracking-widest">Організація</label>
+                            <input type="text" required class="w-full bg-surface border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors" placeholder="Міністерство / Відомство">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-mono text-textmuted uppercase tracking-widest">Контактна особа</label>
+                            <input type="text" required class="w-full bg-surface border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors" placeholder="ПІБ / Посада">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-mono text-textmuted uppercase tracking-widest">Офіційна пошта</label>
+                        <input type="email" required class="w-full bg-surface border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-colors" placeholder="gov/mil адреса">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-mono text-textmuted uppercase tracking-widest">Суть звернення</label>
+                        <textarea required class="w-full bg-surface border border-white/10 px-4 py-3 text-sm text-white focus:outline-none focus:border-white h-32 resize-none transition-colors" placeholder="Вкажіть предмет інтересу..."></textarea>
+                    </div>
+                    
+                    <button type="submit" id="submit-btn" class="w-full bg-white text-black py-4 uppercase text-[11px] font-bold tracking-widest hover:bg-gray-200 transition-colors mt-4">
+                        Надіслати запит
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="bg-base py-16 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 reveal">
+                <!-- Інформація про компанію -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <img src="FreeSample-Vectorizer-io-jpg.svg" alt="ONYX Logo" class="w-full h-full object-contain grayscale opacity-80">
+                        </div>
+                        <span class="font-bold text-xl tracking-tight text-white uppercase leading-none">ONYX Systems</span>
+                    </div>
+                    <p class="text-textmuted text-sm font-light leading-relaxed max-w-sm">
+                        Трансформація бойових операцій через алгоритмічну перевагу. Надійні автономні рішення для глобальної безпеки.
+                    </p>
+                </div>
+
+                <!-- Навігація -->
+                <div>
+                    <h4 class="text-white text-[11px] uppercase tracking-[0.2em] font-bold mb-6">Компанія</h4>
+                    <ul class="space-y-3 text-sm text-textmuted font-light">
+                        <li><a href="#about" class="hover:text-white transition-colors">Технології</a></li>
+                        <li><a href="#solutions" class="hover:text-white transition-colors">Продукти</a></li>
+                        <li><a href="#media" class="hover:text-white transition-colors">Медіа-центр</a></li>
+                    </ul>
+                </div>
+
+                <!-- Контакти -->
+                <div>
+                    <h4 class="text-white text-[11px] uppercase tracking-[0.2em] font-bold mb-6">Контакти</h4>
+                    <ul class="space-y-3 text-sm text-textmuted font-light">
+                        <li>Київ, Україна</li>
+                        <li>вул. Інноваційна, 1</li>
+                        <li class="pt-2">
+                            <a href="mailto:contact@onyxsystems.ua" class="text-white hover:text-accent transition-colors font-medium">
+                                contact@onyxsystems.ua
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-textmuted font-mono uppercase tracking-widest gap-4 text-center md:text-left">
+                <p>&copy; 2026 ONYX SYSTEMS. ALL RIGHTS RESERVED.</p>
+                <div class="flex items-center gap-4">
+                    <span>Export Control: STABLE</span>
+                    <span class="w-1 h-1 bg-white/20 rounded-full"></span>
+                    <span class="text-white">Made in Ukraine</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Скрипти -->
+    <script>
+        // Ініціалізація іконок
+        lucide.createIcons();
+
+        // 1. Анімація при скролі
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // 2. Годинник UTC для навігації
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toISOString().replace('T', ' ').split('.')[0];
+            const clockEl = document.getElementById('sys-clock');
+            if(clockEl) clockEl.textContent = `UTC: ${timeStr}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 3. Мобільне меню
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (menuBtn && mobileMenu) {
+            menuBtn.onclick = () => mobileMenu.classList.toggle('hidden');
+            document.querySelectorAll('.nav-link-mobile').forEach(link => {
+                link.onclick = () => mobileMenu.classList.add('hidden');
+            });
+        }
+
+        // 4. Професійна логіка форми контактів
+        const form = document.getElementById('contact-form');
+        const successMsg = document.getElementById('form-success');
+        const submitBtn = document.getElementById('submit-btn');
+
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Змінюємо стан кнопки
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Відправлення...';
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50');
+
+                // Імітуємо затримку сервера
+                setTimeout(() => {
+                    successMsg.classList.remove('hidden');
+                    // Анімація прояву
+                    setTimeout(() => successMsg.classList.remove('opacity-0'), 10);
+                    
+                    // Повертаємо форму в початковий стан через кілька секунд
+                    setTimeout(() => {
+                        successMsg.classList.add('opacity-0');
+                        setTimeout(() => {
+                            successMsg.classList.add('hidden');
+                            form.reset();
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove('opacity-50');
+                        }, 300);
+                    }, 4000);
+                }, 1000);
+            });
+        }
+    </script>
+</body>
+</html>
